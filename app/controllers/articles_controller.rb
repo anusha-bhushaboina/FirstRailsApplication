@@ -10,7 +10,6 @@ class ArticlesController < ApplicationController
   def show
     # binding.break
     # debugger
-    @article = Article.find(params[:id])
   end
 
   # GET /articles/new
@@ -19,18 +18,15 @@ class ArticlesController < ApplicationController
   end
 
   # GET /articles/1/edit
-  def edit
-    @article = Article.find(params[:id])
-  end
+  def edit; end
 
   # POST /articles or /articles.json
   def create
-    
-    @article = Article.new(params.require(:article).permit(:title, :description))
+    @article = Article.new(article_params)
 
     if @article.save
       redirect_to @article
-      flash[:notice] = "Article was created successfully."
+      flash[:notice] = 'Article was created successfully.'
     else
       render :new
     end
@@ -38,9 +34,8 @@ class ArticlesController < ApplicationController
 
   # PATCH/PUT /articles/1 or /articles/1.json
   def update
-   @article = Article.find(params[:id])
-    if @article.update(params.require(:article).permit(:title, :description))
-      flash[:notice] = "Article was updated successfully."
+    if @article.update(article_params)
+      flash[:notice] = 'Article was updated successfully.'
       redirect_to @article
     else
       render 'edit'
@@ -50,11 +45,7 @@ class ArticlesController < ApplicationController
   # DELETE /articles/1 or /articles/1.json
   def destroy
     @article.destroy
-
-    respond_to do |format|
-      format.html { redirect_to articles_url, notice: 'Article was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to articles_path
   end
 
   private
